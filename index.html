@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fusion Ads</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Inter Font from Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        /* Custom styles for the body and scroll behavior */
+        body {
+            font-family: 'Inter', sans-serif;
+            /* Enable vertical scroll snapping */
+            scroll-snap-type: y mandatory;
+        }
+        /* Mobile menu slide-in effect */
+        .mobile-menu-active #nav-links {
+            transform: translateX(0);
+        }
+        /* Style for the video background */
+        .bg-video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+        }
+        /* Styles for the YouTube video slider */
+        .slider-container {
+            position: relative;
+            width: 100%;
+            max-width: 1200px;
+            height: 70vh;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+        .slide {
+            position: absolute;
+            width: clamp(300px, 80vw, 800px);
+            height: clamp(200px, 45vw, 450px);
+            border: none;
+            border-radius: 0.5rem;
+            box-shadow: 0 5px 15px rgba(255, 255, 255, 0.2);
+            transition: all 0.5s ease;
+            opacity: 0;
+            transform: scale(0.7);
+        }
+
+        .hhh:hover {
+             color: rgb(255, 255, 255);
+             font-size: 18px;
+          }
+
+
+    </style>
+</head>
+<body class="bg-black text-white overflow-x-hidden">
+    <!-- Navbar -->
+    <nav id="navbar" class="bg-black bg-opacity-90 fixed top-0 left-0 w-full p-6 flex justify-between items-center shadow-lg z-50">
+        <!-- Replaced text logo with an image and a fallback -->
+        <a href="#hero" class="flex items-center space-x-2">
+            <img src="./white png.png" 
+                 alt="Fusion Ads Logo" 
+                 style="transform: scale(8); margin-left: 40px;"
+                 class="h-7 w-10 "
+                 onerror="this.onerror=null; this.outerHTML='<span class=\'font-bold text-xl\'>FUSION ADS</span>';" >
+        </a>
+        <div class="md:hidden">
+            <button id="menu-toggle" class="text-white text-2xl focus:outline-none">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+        <ul id="nav-links" class="hidden md:flex space-x-8">
+            <li><a href="#hero" class="hover:text-green-500 transition-colors duration-300 relative group">Home
+                <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-green-500 transition-all duration-300 group-hover:w-full"></span>
+            </a></li>
+            <li><a href="#services" class="hover:text-green-500 transition-colors duration-300 relative group">Services
+                <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-green-500 transition-all duration-300 group-hover:w-full"></span>
+            </a></li>
+            <li><a href="#work" class="hover:text-green-500 transition-colors duration-300 relative group">Work
+                <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-green-500 transition-all duration-300 group-hover:w-full"></span>
+            </a></li>
+            <li><a href="#contact" class="hover:text-green-500 transition-colors duration-300 relative group">Contact
+                <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-green-500 transition-all duration-300 group-hover:w-full"></span>
+            </a></li>
+        </ul>
+    </nav>
+
+    <!-- Mobile Menu (Hidden by default) -->
+    <div id="mobile-menu" class="fixed top-0 right-0 h-full w-full bg-black z-40 transition-transform duration-300 transform translate-x-full md:hidden flex flex-col items-center justify-center space-y-8">
+        <button id="close-menu" class="absolute top-6 right-6 text-white text-3xl">&times;</button>
+        <a href="#hero" class="text-white text-3xl font-bold hover:text-green-500 transition-colors duration-300">Home</a>
+        <a href="#services" class="text-white text-3xl font-bold hover:text-green-500 transition-colors duration-300">Services</a>
+        <a href="#work" class="text-white text-3xl font-bold hover:text-green-500 transition-colors duration-300">Work</a>
+        <a href="#contact" class="text-white text-3xl font-bold hover:text-green-500 transition-colors duration-300">Contact</a>
+    </div>
+
+    <!-- Hero Section with scroll snap -->
+    <section id="hero" class="h-screen flex flex-col justify-center items-center text-center p-5 bg-black relative z-10 scroll-snap-start">
+        <!-- Overlay for better text readability -->
+        <div class="absolute inset-0 bg-black opacity-60"></div>
+        <div class="content relative z-10">
+            <h1 class="text-white text-4xl md:text-5xl font-extrabold tracking-normal leading-tight mb-2 hero-text" style="color: aquamarine;">
+  adsbyfusion
+</h1>
+
+            <h4 class="text-white text-lg md:text-2xl font-light opacity-90 hero-subtext " >Your vision, our fusion.</h4>
+        </div>
+    </section>
+
+
+    <!-- Overlay Section with scroll snap -->
+    <section class="min-h-screen flex justify-center items-center text-center p-5 bg-black relative z-10 scroll-snap-start">
+  <!-- Background Video -->
+  <video autoplay muted loop playsinline class="absolute top-0 left-0 w-full h-full object-cover z-0 " style="opacity: 0.8;">
+    <source src="/website.mp4" type="video/mp4" />
+    Your browser does not support the video tag.
+  </video>
+
+  <!-- Content -->
+  <div class="content max-w-3xl relative z-10">
+    <h1 class="text-white text-xl md:text-3xl leading-relaxed text-gray-400">
+      We fuse emotion and creativity to craft ads that connect, inspire, and stay in people’s hearts.
+    </h1>
+  </div>
+</section>
+
+
+     <section class="min-h-screen flex justify-center items-center text-left p-5 bg-black relative z-10 scroll-snap-start">
+        <div class="content max-w-3xl">
+            <h2 class="text-white text-4xl md:text-5xl font-bold mb-12" style="color: aquamarine">ABOUT US</h2>
+            <h1 class="text-white text-xl md:text-3xl leading-relaxed text-gray-400" >At Fusion Ads, we believe stories have the power to move people, build brands, and leave lasting impressions.<br> <br> With expertise in filmmaking, advertising, and content creation, we bring together creativity and strategy to craft visuals that connect deeply with audiences.<br> <br>From concept to screen, every project is handled with passion, precision, and a vision to make your brand unforgettable.</h1>
+    </section>
+
+    <!-- Services Section with scroll snap -->
+    <section id="services" class="py-24 px-5 bg-black text-center scroll-snap-start">
+  <h2 class="text-white text-4xl md:text-5xl font-bold mb-12" style="color: aquamarine">OUR SERVICES</h2>
+  <div class="services-grid grid md:grid-cols-3 gap-10 max-w-6xl mx-auto">
+    
+    <!-- Adfilms & Commercials -->
+    <div class="bg-black rounded-xl p-8 border border-gray-700 hover:scale-105 transition-transform duration-300 service-card">
+      <i class="fas fa-film text-white text-5xl mb-4 " ></i>
+      <h3 class="text-white text-2xl font-semibold mb-2">Adfilms & Commercials</h3>
+    </div>
+
+    <!-- Video Production -->
+    <div class="bg-black rounded-xl p-8 border border-gray-700 hover:scale-105 transition-transform duration-300 service-card">
+      <i class="fas fa-video text-white text-5xl mb-4 " ></i>
+      <h3 class="text-white text-2xl font-semibold mb-2">Video Production</h3>
+    </div>
+
+    <!-- Creative Direction -->
+    <div class="bg-black rounded-xl p-8 border border-gray-700 hover:scale-105 transition-transform duration-300 service-card">
+      <i class="fas fa-lightbulb text-white text-5xl mb-4" ></i>
+      <h3 class="text-white text-2xl font-semibold mb-2">Creative Direction</h3>
+    </div>
+
+    <!-- End to End Production -->
+    <div class="bg-black rounded-xl p-8 border border-gray-700 hover:scale-105 transition-transform duration-300 service-card">
+      <i class="fas fa-project-diagram text-white text-5xl mb-4" ></i>
+      <h3 class="text-white text-2xl font-semibold mb-2">End to End Production</h3>
+    </div>
+
+    <!-- Social Media Handling -->
+    <div class="bg-black rounded-xl p-8 border border-gray-700 hover:scale-105 transition-transform duration-300 service-card">
+      <i class="fas fa-share-alt text-white text-5xl mb-4" ></i>
+      <h3 class="text-white text-2xl font-semibold mb-2">Social Media Handling</h3>
+    </div>
+
+    <!-- Digital Marketing -->
+    <div class="bg-black rounded-xl p-8 border border-gray-700 hover:scale-105 transition-transform duration-300 service-card">
+      <i class="fas fa-rocket text-white text-5xl mb-4" ></i>
+      <h3 class="text-white text-2xl font-semibold mb-2">Digital Marketing</h3>
+    </div>
+
+    <!-- Photography -->
+    <div class="bg-black rounded-xl p-8 border border-gray-700 hover:scale-105 transition-transform duration-300 service-card">
+      <i class="fas fa-camera text-white text-5xl mb-4" ></i>
+      <h3 class="text-white text-2xl font-semibold mb-2">Photography</h3>
+    </div>
+
+    <!-- Videography -->
+    <div class="bg-black rounded-xl p-8 border border-gray-700 hover:scale-105 transition-transform duration-300 service-card">
+      <i class="fas fa-play-circle text-white text-5xl mb-4" ></i>
+      <h3 class="text-white text-2xl font-semibold mb-2">Videography</h3>
+    </div>
+
+  </div>
+</section>
+
+
+    <!-- YouTube Slider Section with scroll snap -->
+    <section id="work" class="py-24 px-5 bg-black scroll-snap-start">
+        <h2 class="text-white text-4xl md:text-5xl font-bold text-center mb-12" style="color: aquamarine;">OUR WORK</h2>
+        <div class="slider-container">
+           <iframe src="https://www.youtube.com/embed/Ryvj47MWZ4Y" class="slide" allowfullscreen></iframe>
+<iframe src="https://www.youtube.com/embed/F2olTrMUjMI" class="slide" allowfullscreen></iframe>
+<iframe src="https://www.youtube.com/embed/2G-fRYwDpmg" class="slide" allowfullscreen></iframe>
+<iframe src="https://www.youtube.com/embed/bVT76rA_v1s" class="slide" allowfullscreen></iframe>
+<iframe src="https://www.youtube.com/embed/Uj0pRtT_euk" class="slide" allowfullscreen></iframe>
+
+        </div>
+        <!-- Button navigation -->
+        <div class="slider-nav flex justify-center mt-8 space-x-4">
+            <button id="prevBtn" class="bg-white bg-opacity-20 text-white rounded-full w-10 h-10 text-xl cursor-pointer hover:bg-green-500 transition-colors duration-300 focus:outline-none flex justify-center items-center">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            <button id="nextBtn" class="bg-white bg-opacity-20 text-white rounded-full w-10 h-10 text-xl cursor-pointer hover:bg-green-500 transition-colors duration-300 focus:outline-none flex justify-center items-center">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+        </div>
+    </section>
+
+    <!-- Contact Section with scroll snap -->
+    <section id="contact" class="py-24 px-5 bg-black relative z-10 flex justify-center items-center scroll-snap-start">
+  <div class="container max-w-6xl mx-auto bg-black rounded-xl p-8 shadow-xl border border-gray-700">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+      
+      <!-- Left Side: Contact Form -->
+      <div class="bg-black-900 p-6 rounded-xl shadow-lg">
+        <h2 class="text-2xl font-bold text-white mb-6 text-center md:text-left">Get in Touch</h2>
+        <form class="space-y-5">
+          <div>
+            <input type="text" name="name" placeholder="Your Name" class="w-full p-3 rounded-lg bg-black-800 text-white border border-gray-600 focus:outline-none focus:border-green-500">
+          </div>
+          <div>
+            <input type="email" name="email" placeholder="Your Email" class="w-full p-3 rounded-lg bg-black-800 text-white border border-gray-600 focus:outline-none focus:border-green-500">
+          </div>
+          <div>
+            <textarea placeholder="Your Message" name="message" rows="5" class="w-full p-3 rounded-lg bg-black-800 text-white border border-gray-600 focus:outline-none focus:border-green-500"></textarea>
+          </div>
+          <button type="submit" class="w-full bg-green-500 hover:bg-blue-600 text-white font-semibold py-3 rounded-lg transition duration-300">Send Message</button>
+        </form>
+      </div>
+      
+      <!-- Right Side: Contact Info -->
+      <div class="flex flex-col justify-center items-center md:items-start text-center md:text-left space-y-6">
+        <div class="flex items-center space-x-4">
+          <i class="fas fa-envelope text-2xl" style="color:aquamarine;"></i>
+          <p class="text-white"><strong>Email:</strong> fusionads.in@gmail.com</ilp>
+        </div>
+        <div class="flex items-center space-x-4">
+          <i class="fas fa-phone text-2xl" style="color:aquamarine;"></i>
+          <p class="text-white"><strong>Phone:</strong> +91 8593067808</p>
+        </div>
+        <div class="flex items-center space-x-4">
+          <i class="fas fa-map-marker-alt text-2xl" style="color:aquamarine;"></i>
+          <p class="text-white"><strong>Address:</strong> Coimbatore</p>
+        </div>
+        
+        <!-- Social Icons -->
+        <div class="social-icons flex space-x-6 mt-6">
+          <a href="https://www.instagram.com/adsbyfusion?igsh=Y3Uyazh4dzJxZjR0" target="_blank" class="text-white hover:text-green-500 transition-colors duration-300 text-3xl"><i class="fab fa-instagram"></i></a>
+          <a href="http://linkedin.com/in/adsby-fusion-a19baa385" target="_blank" class="text-white hover:text-green-500 transition-colors duration-300 text-3xl"><i class="fab fa-linkedin"></i></a>
+          <a href="https://wa.me/+918593067808" target="_blank" class="text-white hover:text-green-500 transition-colors duration-300 text-3xl"><i class="fab fa-whatsapp"></i></a>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+
+    <!-- Footer -->
+    <footer class="bg-black py-4 px-6 text-center border-t border-gray-700">
+        <p class="text-gray-400 text-sm">&copy; 2024 Fusion Ads. All rights reserved.</p>
+    </footer>
+
+    <!-- GSAP Libraries for animation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script>
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Mobile menu functionality
+        const menuToggle = document.getElementById('menu-toggle');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const closeMenuBtn = document.getElementById('close-menu');
+        const navLinks = document.querySelectorAll('#mobile-menu a');
+
+        function toggleMobileMenu() {
+            mobileMenu.classList.toggle('translate-x-full');
+        }
+
+        menuToggle.addEventListener('click', toggleMobileMenu);
+        closeMenuBtn.addEventListener('click', toggleMobileMenu);
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('translate-x-full');
+            });
+        });
+
+        // Hero section animations using GSAP
+        gsap.from(".hero-text", { duration: 1, y: -20, opacity: 0, ease: "power2.out" });
+        gsap.from(".hero-subtext", { duration: 2, y: 20, opacity: 0, ease: "power2.out", delay: 0.5 });
+
+        // Animate overlay and service cards on scroll using GSAP
+        gsap.from(".overlay h1", {
+            duration: 1,
+            y: 30,
+            opacity: 0,
+            ease: "power2.out",
+            scrollTrigger: {
+                trigger: ".overlay",
+                start: "top 80%",
+            }
+        });
+
+        gsap.from(".service-card", {
+            duration: 0.8,
+            y: 30,
+            opacity: 0,
+            stagger: 0.2,
+            ease: "back.out(1.2)",
+            scrollTrigger: {
+                trigger: ".services-grid",
+                start: "top 80%",
+            }
+        });
+
+        // YouTube video slider functionality
+        const slides = document.querySelectorAll(".slide");
+        const prevBtn = document.getElementById("prevBtn");
+        const nextBtn = document.getElementById("nextBtn");
+        let current = 0;
+
+        // Function to animate and show the correct slide
+        function showSlides(index) 
+        {
+            slides.forEach((slide, i) => {
+                let zIndex = 1;
+                let scale = 0.7;
+                let opacity = 0;
+                let x = "0%";
+
+                if (i === index) {
+                    // Current slide is centered and visible
+                    zIndex = 3;
+                    scale = 1;
+                    opacity = 1;
+                } else if (i === (index - 1 + slides.length) % slides.length) {
+                    // Slide to the left of the current one
+                    zIndex = 2;
+                    scale = 0.8;
+                    opacity = 0.5;
+                    x = "-60%";
+                } else if (i === (index + 1) % slides.length) {
+                    // Slide to the right of the current one
+                    zIndex = 2;
+                    scale = 0.8;
+                    opacity = 0.5;
+                    x = "60%";
+                }
+
+                gsap.to(slide, { x, scale, opacity, zIndex, duration: 0.8 });
+
+                
+            });
+        }
+
+        // Show the first slide initially
+        showSlides(current);
+
+        // Slider navigation logic
+        nextBtn.addEventListener("click", () => {
+            current = (current + 1) % slides.length;
+            showSlides(current);
+        });
+
+        prevBtn.addEventListener("click", () => {
+            current = (current - 1 + slides.length) % slides.length;
+            showSlides(current);
+        });
+    </script>
+</body>
+</html>
