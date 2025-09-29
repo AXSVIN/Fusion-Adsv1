@@ -122,7 +122,7 @@
     <section class="min-h-screen flex justify-center items-center text-center p-5 bg-black relative z-10 scroll-snap-start">
   <!-- Background Video -->
   <video autoplay muted loop playsinline class="absolute top-0 left-0 w-full h-full object-cover z-0 " style="opacity: 0.8;">
-    <source src="/website.mp4" type="video/mp4" />
+    <source src="/website1.mp4" type="video/mp4" />
     Your browser does not support the video tag.
   </video>
 
@@ -221,53 +221,36 @@
     </section>
 
     <!-- Contact Section with scroll snap -->
-    <section id="contact" class="py-24 px-5 bg-black relative z-10 flex justify-center items-center scroll-snap-start">
-  <div class="container max-w-6xl mx-auto bg-black rounded-xl p-8 shadow-xl border border-gray-700">
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
-      
-      <!-- Left Side: Contact Form -->
-      <div class="bg-black-900 p-6 rounded-xl shadow-lg">
-        <h2 class="text-2xl font-bold text-white mb-6 text-center md:text-left">Get in Touch</h2>
-        <form class="space-y-5">
-          <div>
-            <input type="text" name="name" placeholder="Your Name" class="w-full p-3 rounded-lg bg-black-800 text-white border border-gray-600 focus:outline-none focus:border-green-500">
-          </div>
-          <div>
-            <input type="email" name="email" placeholder="Your Email" class="w-full p-3 rounded-lg bg-black-800 text-white border border-gray-600 focus:outline-none focus:border-green-500">
-          </div>
-          <div>
-            <textarea placeholder="Your Message" name="message" rows="5" class="w-full p-3 rounded-lg bg-black-800 text-white border border-gray-600 focus:outline-none focus:border-green-500"></textarea>
-          </div>
-          <button type="submit" class="w-full bg-green-500 hover:bg-blue-600 text-white font-semibold py-3 rounded-lg transition duration-300">Send Message</button>
-        </form>
-      </div>
-      
-      <!-- Right Side: Contact Info -->
-      <div class="flex flex-col justify-center items-center md:items-start text-center md:text-left space-y-6">
-        <div class="flex items-center space-x-4">
-          <i class="fas fa-envelope text-2xl" style="color:aquamarine;"></i>
-          <p class="text-white"><strong>Email:</strong> fusionads.in@gmail.com</ilp>
+     <section id="contact" class="py-24 px-5 bg-black relative z-10 flex justify-center items-center">
+    <div class="container max-w-6xl mx-auto bg-black rounded-xl p-8 shadow-xl border border-gray-700">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+
+        <!-- Left Side: Contact Form -->
+        <div class="p-6 rounded-xl shadow-lg">
+          <h2 class="text-2xl font-bold text-white mb-6 text-center md:text-left">Get in Touch</h2>
+          <form id="contactForm" class="space-y-5">
+            <div>
+              <input type="text" name="name" placeholder="Your Name" class="w-full p-3 rounded-lg bg-black-800 text-black border border-gray-600 focus:outline-none focus:border-green-500" required>
+            </div>
+            <div>
+              <input type="email" name="email" placeholder="Your Email" class="w-full p-3 rounded-lg bg-black-800 text-black border border-gray-600 focus:outline-none focus:border-green-500" required>
+            </div>
+            <div>
+              <textarea placeholder="Your Message" name="message" rows="5" class="w-full p-3 rounded-lg bg-black-800 text-black border border-gray-600 focus:outline-none focus:border-green-500" required></textarea>
+            </div>
+            <button type="submit" class="w-full bg-green-500 hover:bg-blue-600 text-white font-semibold py-3 rounded-lg transition duration-300">Send Message</button>
+          </form>
         </div>
-        <div class="flex items-center space-x-4">
-          <i class="fas fa-phone text-2xl" style="color:aquamarine;"></i>
-          <p class="text-white"><strong>Phone:</strong> +91 8593067808</p>
-        </div>
-        <div class="flex items-center space-x-4">
-          <i class="fas fa-map-marker-alt text-2xl" style="color:aquamarine;"></i>
-          <p class="text-white"><strong>Address:</strong> Coimbatore</p>
-        </div>
-        
-        <!-- Social Icons -->
-        <div class="social-icons flex space-x-6 mt-6">
-          <a href="https://www.instagram.com/adsbyfusion?igsh=Y3Uyazh4dzJxZjR0" target="_blank" class="text-white hover:text-green-500 transition-colors duration-300 text-3xl"><i class="fab fa-instagram"></i></a>
-          <a href="http://linkedin.com/in/adsby-fusion-a19baa385" target="_blank" class="text-white hover:text-green-500 transition-colors duration-300 text-3xl"><i class="fab fa-linkedin"></i></a>
-          <a href="https://wa.me/+918593067808" target="_blank" class="text-white hover:text-green-500 transition-colors duration-300 text-3xl"><i class="fab fa-whatsapp"></i></a>
+
+        <!-- Right Side: Info -->
+        <div class="flex flex-col justify-center items-center md:items-start text-center md:text-left space-y-6">
+          <p><strong>Email:</strong> fusionads.in@gmail.com</p>
+          <p><strong>Phone:</strong> +91 8593067808</p>
+          <p><strong>Address:</strong> Coimbatore</p>
         </div>
       </div>
-      
     </div>
-  </div>
-</section>
+  </section>
 
 
     <!-- Footer -->
@@ -380,6 +363,31 @@
             current = (current - 1 + slides.length) % slides.length;
             showSlides(current);
         });
+
+
+
+  document.getElementById("contactForm").addEventListener("submit", async function(e) {
+      e.preventDefault();
+
+      const name = this.name.value;
+      const email = this.email.value;
+      const message = this.message.value;
+
+      try {
+        const res = await fetch("http://localhost:5000/send", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ name, email, message })
+        });
+
+        const data = await res.json();
+        alert(data.message);
+      } catch (err) {
+        alert("Error sending message. Please try again.");
+      }
+    });
+
+
     </script>
 </body>
 </html>
