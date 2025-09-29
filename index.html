@@ -1,393 +1,464 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fusion Ads</title>
-    <!-- Tailwind CSS CDN -->
+    <title>Fusion Ads - Creative Agency</title>
+    <!-- Load Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Inter Font from Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Font Awesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <!-- Load Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    
+    <!-- Load React and Babel for JSX compilation -->
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    
+    <!-- Load GSAP Core Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <!-- Load ScrollTrigger Plugin (MUST be loaded AFTER GSAP) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
     <style>
-        /* Custom styles for the body and scroll behavior */
-        body {
-            font-family: 'Inter', sans-serif;
-            /* Enable vertical scroll snapping */
-            scroll-snap-type: y mandatory;
+        /* Custom scrollbar for aesthetics */
+        body::-webkit-scrollbar {
+            width: 8px;
         }
-        /* Mobile menu slide-in effect */
-        .mobile-menu-active #nav-links {
-            transform: translateX(0);
+        body::-webkit-scrollbar-track {
+            background: #111;
         }
-        /* Style for the video background */
-        .bg-video {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            z-index: -1;
+        body::-webkit-scrollbar-thumb {
+            background-color: aquamarine;
+            border-radius: 4px;
         }
-        /* Styles for the YouTube video slider */
-        .slider-container {
-            position: relative;
-            width: 100%;
-            max-width: 1200px;
-            height: 70vh;
-            margin: 0 auto;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow: hidden;
+        /* Ensure smooth scroll behavior */
+        html {
+            scroll-behavior: smooth;
         }
-        .slide {
-            position: absolute;
-            width: clamp(300px, 80vw, 800px);
-            height: clamp(200px, 45vw, 450px);
-            border: none;
-            border-radius: 0.5rem;
-            box-shadow: 0 5px 15px rgba(255, 255, 255, 0.2);
-            transition: all 0.5s ease;
-            opacity: 0;
-            transform: scale(0.7);
+        /* Custom spinner animation */
+        @keyframes spin {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
         }
-
-        .hhh:hover {
-             color: rgb(255, 255, 255);
-             font-size: 18px;
-          }
-
-
+        .spinner {
+          animation: spin 1s linear infinite;
+        }
     </style>
 </head>
-<body class="bg-black text-white overflow-x-hidden">
-    <!-- Navbar -->
-    <nav id="navbar" class="bg-black bg-opacity-90 fixed top-0 left-0 w-full p-6 flex justify-between items-center shadow-lg z-50">
-        <!-- Replaced text logo with an image and a fallback -->
-        <a href="#hero" class="flex items-center space-x-2">
-            <img src="./white png.png" 
-                 alt="Fusion Ads Logo" 
-                 style="transform: scale(8); margin-left: 40px;"
-                 class="h-7 w-10 "
-                 onerror="this.onerror=null; this.outerHTML='<span class=\'font-bold text-xl\'>FUSION ADS</span>';" >
-        </a>
-        <div class="md:hidden">
-            <button id="menu-toggle" class="text-white text-2xl focus:outline-none">
-                <i class="fas fa-bars"></i>
-            </button>
-        </div>
-        <ul id="nav-links" class="hidden md:flex space-x-8">
-            <li><a href="#hero" class="hover:text-green-500 transition-colors duration-300 relative group">Home
-                <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-green-500 transition-all duration-300 group-hover:w-full"></span>
-            </a></li>
-            <li><a href="#services" class="hover:text-green-500 transition-colors duration-300 relative group">Services
-                <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-green-500 transition-all duration-300 group-hover:w-full"></span>
-            </a></li>
-            <li><a href="#work" class="hover:text-green-500 transition-colors duration-300 relative group">Work
-                <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-green-500 transition-all duration-300 group-hover:w-full"></span>
-            </a></li>
-            <li><a href="#contact" class="hover:text-green-500 transition-colors duration-300 relative group">Contact
-                <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-green-500 transition-all duration-300 group-hover:w-full"></span>
-            </a></li>
-        </ul>
-    </nav>
+<body class="bg-black text-white" style="font-family: 'Inter', sans-serif;">
 
-    <!-- Mobile Menu (Hidden by default) -->
-    <div id="mobile-menu" class="fixed top-0 right-0 h-full w-full bg-black z-40 transition-transform duration-300 transform translate-x-full md:hidden flex flex-col items-center justify-center space-y-8">
-        <button id="close-menu" class="absolute top-6 right-6 text-white text-3xl">&times;</button>
-        <a href="#hero" class="text-white text-3xl font-bold hover:text-green-500 transition-colors duration-300">Home</a>
-        <a href="#services" class="text-white text-3xl font-bold hover:text-green-500 transition-colors duration-300">Services</a>
-        <a href="#work" class="text-white text-3xl font-bold hover:text-green-500 transition-colors duration-300">Work</a>
-        <a href="#contact" class="text-white text-3xl font-bold hover:text-green-500 transition-colors duration-300">Contact</a>
-    </div>
+    <div id="root"></div>
 
-    <!-- Hero Section with scroll snap -->
-    <section id="hero" class="h-screen flex flex-col justify-center items-center text-center p-5 bg-black relative z-10 scroll-snap-start">
-        <!-- Overlay for better text readability -->
-        <div class="absolute inset-0 bg-black opacity-60"></div>
-        <div class="content relative z-10">
-            <h1 class="text-white text-4xl md:text-5xl font-extrabold tracking-normal leading-tight mb-2 hero-text" style="color: aquamarine;">
-  adsbyfusion
-</h1>
+    <script type="text/babel">
+        const { useState, useEffect, useRef } = React;
 
-            <h4 class="text-white text-lg md:text-2xl font-light opacity-90 hero-subtext " >Your vision, our fusion.</h4>
-        </div>
-    </section>
+        // --- Static Data Definitions ---
+        const youtubeVideos = [
+          'Ryvj47MWZ4Y', // Sample Video 1
+          'F2olTrMUjMI', // Sample Video 2
+          '2G-fRYwDpmg', // Sample Video 3
+          'bVT76rA_v1s', // Sample Video 4
+          'Uj0pRtT_euk', // Sample Video 5
+        ];
 
+        const servicesData = [
+          { icon: 'fas fa-film', title: 'Adfilms & Commercials' },
+          { icon: 'fas fa-video', title: 'Video Production' },
+          { icon: 'fas fa-lightbulb', title: 'Creative Direction' },
+          { icon: 'fas fa-project-diagram', title: 'End to End Production' },
+          { icon: 'fas fa-share-alt', title: 'Social Media Handling' },
+          { icon: 'fas fa-rocket', title: 'Digital Marketing' },
+          { icon: 'fas fa-camera', title: 'Photography' },
+          { icon: 'fas fa-play-circle', title: 'Videography' },
+        ];
 
-    <!-- Overlay Section with scroll snap -->
-    <section class="min-h-screen flex justify-center items-center text-center p-5 bg-black relative z-10 scroll-snap-start">
-  <!-- Background Video -->
-  <video autoplay muted loop playsinline class="absolute top-0 left-0 w-full h-full object-cover z-0 " style="opacity: 0.8;">
-    <source src="/website.mp4" type="video/mp4" />
-    Your browser does not support the video tag.
-  </video>
+        // --- Custom Styles (Converted from CSS for React/Tailwind) ---
+        const sliderStyles = {
+          container: {
+            position: 'relative',
+            width: '100%',
+            maxWidth: '1200px',
+            height: '70vh',
+            margin: '0 auto',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            overflow: 'hidden',
+          },
+        };
 
-  <!-- Content -->
-  <div class="content max-w-3xl relative z-10">
-    <h1 class="text-white text-xl md:text-3xl leading-relaxed text-gray-400">
-      We fuse emotion and creativity to craft ads that connect, inspire, and stay in people’s hearts.
-    </h1>
-  </div>
-</section>
+        const slideBaseStyle = {
+          position: 'absolute',
+          width: 'clamp(300px, 80vw, 800px)',
+          height: 'clamp(200px, 45vw, 450px)',
+          border: 'none',
+          borderRadius: '0.5rem',
+          boxShadow: '0 5px 15px rgba(255, 255, 255, 0.2)',
+          transition: 'all 0.5s ease',
+          opacity: 0,
+          transform: 'scale(0.7)',
+          pointerEvents: 'none', // Prevent interactions when off-screen
+        };
+
+        // Placeholder video source for the background
+        const videoSrc = './website.mp4';
 
 
-     <section class="min-h-screen flex justify-center items-center text-left p-5 bg-black relative z-10 scroll-snap-start">
-        <div class="content max-w-3xl">
-            <h2 class="text-white text-4xl md:text-5xl font-bold mb-12" style="color: aquamarine">ABOUT US</h2>
-            <h1 class="text-white text-xl md:text-3xl leading-relaxed text-gray-400" >At Fusion Ads, we believe stories have the power to move people, build brands, and leave lasting impressions.<br> <br> With expertise in filmmaking, advertising, and content creation, we bring together creativity and strategy to craft visuals that connect deeply with audiences.<br> <br>From concept to screen, every project is handled with passion, precision, and a vision to make your brand unforgettable.</h1>
-    </section>
+        // --- Confirmation Modal Component ---
+        const ConfirmationModal = ({ isOpen, message, onClose }) => {
+            if (!isOpen) return null;
 
-    <!-- Services Section with scroll snap -->
-    <section id="services" class="py-24 px-5 bg-black text-center scroll-snap-start">
-  <h2 class="text-white text-4xl md:text-5xl font-bold mb-12" style="color: aquamarine">OUR SERVICES</h2>
-  <div class="services-grid grid md:grid-cols-3 gap-10 max-w-6xl mx-auto">
-    
-    <!-- Adfilms & Commercials -->
-    <div class="bg-black rounded-xl p-8 border border-gray-700 hover:scale-105 transition-transform duration-300 service-card">
-      <i class="fas fa-film text-white text-5xl mb-4 " ></i>
-      <h3 class="text-white text-2xl font-semibold mb-2">Adfilms & Commercials</h3>
-    </div>
+            // Determine icon based on success message
+            const isSuccess = message.includes('success');
+            const iconClass = isSuccess ? 'fas fa-check-circle text-green-400' : 'fas fa-exclamation-triangle text-red-500';
 
-    <!-- Video Production -->
-    <div class="bg-black rounded-xl p-8 border border-gray-700 hover:scale-105 transition-transform duration-300 service-card">
-      <i class="fas fa-video text-white text-5xl mb-4 " ></i>
-      <h3 class="text-white text-2xl font-semibold mb-2">Video Production</h3>
-    </div>
-
-    <!-- Creative Direction -->
-    <div class="bg-black rounded-xl p-8 border border-gray-700 hover:scale-105 transition-transform duration-300 service-card">
-      <i class="fas fa-lightbulb text-white text-5xl mb-4" ></i>
-      <h3 class="text-white text-2xl font-semibold mb-2">Creative Direction</h3>
-    </div>
-
-    <!-- End to End Production -->
-    <div class="bg-black rounded-xl p-8 border border-gray-700 hover:scale-105 transition-transform duration-300 service-card">
-      <i class="fas fa-project-diagram text-white text-5xl mb-4" ></i>
-      <h3 class="text-white text-2xl font-semibold mb-2">End to End Production</h3>
-    </div>
-
-    <!-- Social Media Handling -->
-    <div class="bg-black rounded-xl p-8 border border-gray-700 hover:scale-105 transition-transform duration-300 service-card">
-      <i class="fas fa-share-alt text-white text-5xl mb-4" ></i>
-      <h3 class="text-white text-2xl font-semibold mb-2">Social Media Handling</h3>
-    </div>
-
-    <!-- Digital Marketing -->
-    <div class="bg-black rounded-xl p-8 border border-gray-700 hover:scale-105 transition-transform duration-300 service-card">
-      <i class="fas fa-rocket text-white text-5xl mb-4" ></i>
-      <h3 class="text-white text-2xl font-semibold mb-2">Digital Marketing</h3>
-    </div>
-
-    <!-- Photography -->
-    <div class="bg-black rounded-xl p-8 border border-gray-700 hover:scale-105 transition-transform duration-300 service-card">
-      <i class="fas fa-camera text-white text-5xl mb-4" ></i>
-      <h3 class="text-white text-2xl font-semibold mb-2">Photography</h3>
-    </div>
-
-    <!-- Videography -->
-    <div class="bg-black rounded-xl p-8 border border-gray-700 hover:scale-105 transition-transform duration-300 service-card">
-      <i class="fas fa-play-circle text-white text-5xl mb-4" ></i>
-      <h3 class="text-white text-2xl font-semibold mb-2">Videography</h3>
-    </div>
-
-  </div>
-</section>
+            return (
+                <div className="fixed inset-0 bg-black bg-opacity-75 z-[100] flex justify-center items-center p-4 transition-opacity duration-300">
+                    <div className="bg-gray-900 border border-green-500 rounded-xl p-8 max-w-sm w-full text-center shadow-2xl transform transition-transform duration-300 scale-100">
+                        <i className={`${iconClass} text-5xl mb-4`}></i>
+                        <h3 className="text-xl font-bold mb-4 text-white">Message Status</h3>
+                        <p className="text-gray-300 mb-6">{message}</p>
+                        <button 
+                            onClick={onClose} 
+                            className="w-full bg-green-500 hover:bg-green-600 text-white font-semibold py-2 rounded-lg transition duration-300"
+                        >
+                            Close
+                        </button>
+                    </div>
+                </div>
+            );
+        };
 
 
-    <!-- YouTube Slider Section with scroll snap -->
-    <section id="work" class="py-24 px-5 bg-black scroll-snap-start">
-        <h2 class="text-white text-4xl md:text-5xl font-bold text-center mb-12" style="color: aquamarine;">OUR WORK</h2>
-        <div class="slider-container">
-           <iframe src="https://www.youtube.com/embed/Ryvj47MWZ4Y" class="slide" allowfullscreen></iframe>
-<iframe src="https://www.youtube.com/embed/F2olTrMUjMI" class="slide" allowfullscreen></iframe>
-<iframe src="https://www.youtube.com/embed/2G-fRYwDpmg" class="slide" allowfullscreen></iframe>
-<iframe src="https://www.youtube.com/embed/bVT76rA_v1s" class="slide" allowfullscreen></iframe>
-<iframe src="https://www.youtube.com/embed/Uj0pRtT_euk" class="slide" allowfullscreen></iframe>
-
-        </div>
-        <!-- Button navigation -->
-        <div class="slider-nav flex justify-center mt-8 space-x-4">
-            <button id="prevBtn" class="bg-white bg-opacity-20 text-white rounded-full w-10 h-10 text-xl cursor-pointer hover:bg-green-500 transition-colors duration-300 focus:outline-none flex justify-center items-center">
-                <i class="fas fa-chevron-left"></i>
-            </button>
-            <button id="nextBtn" class="bg-white bg-opacity-20 text-white rounded-full w-10 h-10 text-xl cursor-pointer hover:bg-green-500 transition-colors duration-300 focus:outline-none flex justify-center items-center">
-                <i class="fas fa-chevron-right"></i>
-            </button>
-        </div>
-    </section>
-
-    <!-- Contact Section with scroll snap -->
-     <section id="contact" class="py-24 px-5 bg-black relative z-10 flex justify-center items-center">
-    <div class="container max-w-6xl mx-auto bg-black rounded-xl p-8 shadow-xl border border-gray-700">
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
-
-        <!-- Left Side: Contact Form -->
-        <div class="p-6 rounded-xl shadow-lg">
-          <h2 class="text-2xl font-bold text-white mb-6 text-center md:text-left">Get in Touch</h2>
-          <form id="contactForm" class="space-y-5">
-            <div>
-              <input type="text" name="name" placeholder="Your Name" class="w-full p-3 rounded-lg bg-black-800 text-black border border-gray-600 focus:outline-none focus:border-green-500" required>
-            </div>
-            <div>
-              <input type="email" name="email" placeholder="Your Email" class="w-full p-3 rounded-lg bg-black-800 text-black border border-gray-600 focus:outline-none focus:border-green-500" required>
-            </div>
-            <div>
-              <textarea placeholder="Your Message" name="message" rows="5" class="w-full p-3 rounded-lg bg-black-800 text-black border border-gray-600 focus:outline-none focus:border-green-500" required></textarea>
-            </div>
-            <button type="submit" class="w-full bg-green-500 hover:bg-blue-600 text-white font-semibold py-3 rounded-lg transition duration-300">Send Message</button>
-          </form>
-        </div>
-
-        <!-- Right Side: Info -->
-        <div class="flex flex-col justify-center items-center md:items-start text-center md:text-left space-y-6">
-          <p><strong>Email:</strong> fusionads.in@gmail.com</p>
-          <p><strong>Phone:</strong> +91 8593067808</p>
-          <p><strong>Address:</strong> Coimbatore</p>
-        </div>
-      </div>
-    </div>
-  </section>
+        const App = () => {
+          const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+          const [currentSlide, setCurrentSlide] = useState(0);
+          const slidesRef = useRef([]); // Ref to hold DOM elements for GSAP manipulation
+          
+          // State for Modal and Form Submission
+          const [isModalOpen, setIsModalOpen] = useState(false);
+          const [modalMessage, setModalMessage] = useState('');
+          const [isSubmitting, setIsSubmitting] = useState(false);
 
 
-    <!-- Footer -->
-    <footer class="bg-black py-4 px-6 text-center border-t border-gray-700">
-        <p class="text-gray-400 text-sm">&copy; 2024 Fusion Ads. All rights reserved.</p>
-    </footer>
+          // --- Utility Functions ---
+          const toggleMobileMenu = () => {
+            setIsMobileMenuOpen(!isMobileMenuOpen);
+          };
 
-    <!-- GSAP Libraries for animation -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-    <script>
-        gsap.registerPlugin(ScrollTrigger);
+          const handlePrev = () => {
+            setCurrentSlide(prev => (prev - 1 + youtubeVideos.length) % youtubeVideos.length);
+          };
 
-        // Mobile menu functionality
-        const menuToggle = document.getElementById('menu-toggle');
-        const mobileMenu = document.getElementById('mobile-menu');
-        const closeMenuBtn = document.getElementById('close-menu');
-        const navLinks = document.querySelectorAll('#mobile-menu a');
+          const handleNext = () => {
+            setCurrentSlide(prev => (prev + 1) % youtubeVideos.length);
+          };
 
-        function toggleMobileMenu() {
-            mobileMenu.classList.toggle('translate-x-full');
-        }
+          const handleCloseModal = () => {
+            setIsModalOpen(false);
+            setModalMessage('');
+          };
 
-        menuToggle.addEventListener('click', toggleMobileMenu);
-        closeMenuBtn.addEventListener('click', toggleMobileMenu);
-        navLinks.forEach(link => {
-            link.addEventListener('click', () => {
-                mobileMenu.classList.add('translate-x-full');
-            });
-        });
+          const handleSubmit = async (e) => {
+            e.preventDefault();
+            setIsSubmitting(true);
 
-        // Hero section animations using GSAP
-        gsap.from(".hero-text", { duration: 1, y: -20, opacity: 0, ease: "power2.out" });
-        gsap.from(".hero-subtext", { duration: 2, y: 20, opacity: 0, ease: "power2.out", delay: 0.5 });
+            const form = e.target;
+            const formData = new FormData(form);
+            
+            // The Google Script URL must be used directly in the fetch body
+            const url = 'https://script.google.com/macros/s/AKfycbwBM7WkjVYT8ybMttIYQ-p2UxEe8_VEgF714RvK8qllyESmDErJM2k7k2Nc6n0Tdfw5/exec';
 
-        // Animate overlay and service cards on scroll using GSAP
-        gsap.from(".overlay h1", {
-            duration: 1,
-            y: 30,
-            opacity: 0,
-            ease: "power2.out",
-            scrollTrigger: {
-                trigger: ".overlay",
-                start: "top 80%",
-            }
-        });
+            try {
+                // Using fetch to submit the data to the Google Script.
+                // Note: The external script may not return a standard JSON success/error.
+                // We show success if the fetch operation itself does not throw an error.
+                const response = await fetch(url, {
+                    method: 'POST',
+                    body: formData, // Use FormData directly
+                    // Do not include 'Content-Type': 'application/x-www-form-urlencoded' when using FormData
+                });
 
-        gsap.from(".service-card", {
-            duration: 0.8,
-            y: 30,
-            opacity: 0,
-            stagger: 0.2,
-            ease: "back.out(1.2)",
-            scrollTrigger: {
-                trigger: ".services-grid",
-                start: "top 80%",
-            }
-        });
-
-        // YouTube video slider functionality
-        const slides = document.querySelectorAll(".slide");
-        const prevBtn = document.getElementById("prevBtn");
-        const nextBtn = document.getElementById("nextBtn");
-        let current = 0;
-
-        // Function to animate and show the correct slide
-        function showSlides(index) 
-        {
-            slides.forEach((slide, i) => {
-                let zIndex = 1;
-                let scale = 0.7;
-                let opacity = 0;
-                let x = "0%";
-
-                if (i === index) {
-                    // Current slide is centered and visible
-                    zIndex = 3;
-                    scale = 1;
-                    opacity = 1;
-                } else if (i === (index - 1 + slides.length) % slides.length) {
-                    // Slide to the left of the current one
-                    zIndex = 2;
-                    scale = 0.8;
-                    opacity = 0.5;
-                    x = "-60%";
-                } else if (i === (index + 1) % slides.length) {
-                    // Slide to the right of the current one
-                    zIndex = 2;
-                    scale = 0.8;
-                    opacity = 0.5;
-                    x = "60%";
+                // A non-erroring fetch is generally treated as success for this type of integration
+                if (response.ok || response.type === 'opaque') {
+                    setModalMessage("Thank you! Your message has been sent successfully. We'll be in touch soon.");
+                    form.reset();
+                } else {
+                    setModalMessage("Submission failed. The external server responded with an error. Please try again.");
                 }
 
-                gsap.to(slide, { x, scale, opacity, zIndex, duration: 0.8 });
+            } catch (error) {
+                console.error('Submission error:', error);
+                setModalMessage("There was an error connecting to the server. Please check your internet connection.");
+            } finally {
+                setIsSubmitting(false);
+                setIsModalOpen(true);
+            }
+          };
 
-                
+
+          // --- useEffect for GSAP Scroll Animations (runs once on mount) ---
+          useEffect(() => {
+            if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') {
+              console.error("GSAP or ScrollTrigger library not found. Animations skipped.");
+              return;
+            }
+
+            // Register plugins
+            gsap.registerPlugin(ScrollTrigger);
+            
+            // Navbar animation
+            gsap.from("#navbar", {
+              y: -100,
+              opacity: 0,
+              duration: 0.8,
+              ease: "power2.out",
+              scrollTrigger: {
+                trigger: "body",
+                start: "top top",
+                toggleActions: "play none none reverse",
+              },
             });
-        }
 
-        // Show the first slide initially
-        showSlides(current);
+            // Hero section animations
+            gsap.from(".hero-text", { duration: 1, y: -20, opacity: 0, ease: "power2.out" });
+            gsap.from(".hero-subtext", { duration: 2, y: 20, opacity: 0, ease: "power2.out", delay: 0.5 });
+            
+            // Services section card stagger animation
+            gsap.from(".service-card", {
+              duration: 0.8,
+              y: 30,
+              opacity: 0,
+              stagger: 0.2,
+              ease: "back.out(1.2)",
+              scrollTrigger: {
+                trigger: ".services-grid",
+                start: "top 80%",
+              },
+            });
+          }, []); // Empty dependency array ensures it runs once on mount
 
-        // Slider navigation logic
-        nextBtn.addEventListener("click", () => {
-            current = (current + 1) % slides.length;
-            showSlides(current);
-        });
+          // --- useEffect for Video Slider Logic (runs on slide change) ---
+          useEffect(() => {
+            const slides = slidesRef.current.filter(Boolean); // Filter out any null elements
+            
+            if (typeof gsap === 'undefined') {
+              return;
+            }
+            
+            slides.forEach((slide, i) => {
+              let zIndex = 1;
+              let scale = 0.7;
+              let opacity = 0;
+              let x = "0%";
+              let pointerEvents = 'none';
 
-        prevBtn.addEventListener("click", () => {
-            current = (current - 1 + slides.length) % slides.length;
-            showSlides(current);
-        });
+              if (i === currentSlide) {
+                // Center slide
+                zIndex = 3;
+                scale = 1;
+                opacity = 1;
+                pointerEvents = 'auto'; // Enable interaction for the main slide
+              } else if (i === (currentSlide - 1 + slides.length) % slides.length) {
+                // Left slide
+                zIndex = 2;
+                scale = 0.8;
+                opacity = 0.5;
+                x = "-60%";
+              } else if (i === (currentSlide + 1) % slides.length) {
+                // Right slide
+                zIndex = 2;
+                scale = 0.8;
+                opacity = 0.5;
+                x = "60%";
+              }
+
+              // Use GSAP to animate the transitions smoothly
+              gsap.to(slide, { x, scale, opacity, zIndex, pointerEvents, duration: 0.8, ease: 'power2.out' });
+            });
+          }, [currentSlide]); // Reruns whenever currentSlide changes
 
 
+          // --- Rendered JSX ---
+          return (
+            <div className="bg-black text-white">
+              
+              {/* 1. Navbar */}
+              <nav id="navbar" className="bg-black bg-opacity-90 fixed top-0 left-0 w-full p-6 flex justify-between items-center shadow-lg z-50">
+                <a href="#hero" className="flex items-center space-x-2">
+                  {/* Logo Image Placeholder - Updated hover:scale-125 for stronger zoom */}
+                  <img 
+                    src="./logo.png" 
+                    alt="Fusion Ads Logo" 
+                    className="h-12 ml-10 w-auto rounded-md shadow-md transition-transform duration-600 scale-125"
+                  />
+                </a>
+                <div className="md:hidden">
+                  <button id="menu-toggle" className="text-white text-2xl focus:outline-none" onClick={toggleMobileMenu}>
+                    {/* The icon color is explicitly set to white */}
+                    <i className="fas fa-bars text-white"></i>
+                  </button>
+                </div>
+                <ul id="nav-links" className="hidden md:flex space-x-8">
+                  <li><a href="#hero" className="hover:text-green-500 transition-colors duration-300 relative group">Home<span className="absolute bottom-0 left-0 w-0 h-0.5 bg-green-500 transition-all duration-300 group-hover:w-full"></span></a></li>
+                  <li><a href="#services" className="hover:text-green-500 transition-colors duration-300 relative group">Services<span className="absolute bottom-0 left-0 w-0 h-0.5 bg-green-500 transition-all duration-300 group-hover:w-full"></span></a></li>
+                  <li><a href="#work" className="hover:text-green-500 transition-colors duration-300 relative group">Work<span className="absolute bottom-0 left-0 w-0 h-0.5 bg-green-500 transition-all duration-300 group-hover:w-full"></span></a></li>
+                  <li><a href="#contact" className="hover:text-green-500 transition-colors duration-300 relative group">Contact<span className="absolute bottom-0 left-0 w-0 h-0.5 bg-green-500 transition-all duration-300 group-hover:w-full"></span></a></li>
+                </ul>
+              </nav>
 
-  document.getElementById("contactForm").addEventListener("submit", async function(e) {
-      e.preventDefault();
+              {/* Mobile Menu (Using React state for transition) */}
+              <div id="mobile-menu" className={`fixed top-0 right-0 h-full w-full bg-black z-40 transition-transform duration-300 transform ${isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'} md:hidden flex flex-col items-center justify-center space-y-8`}>
+                <button id="close-menu" className="absolute top-6 right-6 text-white text-3xl" onClick={toggleMobileMenu}>&times;</button>
+                <a href="#hero" className="text-white text-3xl font-bold hover:text-green-500 transition-colors duration-300" onClick={toggleMobileMenu}>Home</a>
+                <a href="#services" className="text-white text-3xl font-bold hover:text-green-500 transition-colors duration-300" onClick={toggleMobileMenu}>Services</a>
+                <a href="#work" className="text-white text-3xl font-bold hover:text-green-500 transition-colors duration-300" onClick={toggleMobileMenu}>Work</a>
+                <a href="#contact" className="text-white text-3xl font-bold hover:text-green-500 transition-colors duration-300" onClick={toggleMobileMenu}>Contact</a>
+              </div>
 
-      const name = this.name.value;
-      const email = this.email.value;
-      const message = this.message.value;
+              {/* 2. Hero Section */}
+              <section id="hero" className="h-screen flex flex-col justify-center items-center text-center p-5 bg-black relative z-10">
+                <div className="absolute inset-0 bg-black opacity-60"></div>
+                <div className="content relative z-10">
+                  <h1 className="text-4xl md:text-5xl font-extrabold tracking-normal leading-tight mb-2 hero-text" style={{ color: 'aquamarine' }}>
+                    adsbyfusion
+                  </h1>
+                  <h4 className="text-lg md:text-2xl font-light opacity-90 hero-subtext">Your vision, our fusion.</h4>
+                </div>
+              </section>
 
-      try {
-        const res = await fetch("http://localhost:5000/send", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ name, email, message })
-        });
+              {/* 3. Overlay/Mission Section with video */}
+              <section className="min-h-screen flex justify-center items-center text-center p-5 bg-black relative z-10">
+                <video autoPlay muted loop playsInline className="absolute top-0 left-0 w-full h-full object-cover z-0" style={{ opacity: 0.8 }}>
+                  <source src={videoSrc} type="video/mp4" />
+                  Your browser does not support the video tag.
+                </video>
+                <div className="content max-w-3xl relative z-10 bg-black bg-opacity-50 p-6 rounded-xl">
+                  <h1 className="text-white text-xl md:text-3xl leading-relaxed text-gray-200">
+                    We fuse emotion and creativity to craft ads that connect, inspire, and stay in people’s hearts.
+                  </h1>
+                </div>
+              </section>
 
-        const data = await res.json();
-        alert(data.message);
-      } catch (err) {
-        alert("Error sending message. Please try again.");
-      }
-    });
+              {/* 4. About Us Section */}
+              <section className="min-h-screen flex justify-center items-center text-left p-5 bg-black relative z-10">
+                <div className="content max-w-3xl">
+                  <h2 className="text-white text-4xl md:text-5xl font-bold mb-12" style={{ color: 'aquamarine' }}>ABOUT US</h2>
+                  <h1 className="text-white text-xl md:text-3xl leading-relaxed text-gray-400">
+                    At **Fusion Ads**, we believe stories have the power to move people, build brands, and leave lasting impressions.<br /><br />
+                    With expertise in filmmaking, advertising, and content creation, we bring together creativity and strategy to craft visuals that connect deeply with audiences.<br /><br />
+                    From concept to screen, every project is handled with passion, precision, and a vision to make your brand unforgettable.
+                  </h1>
+                </div>
+              </section>
 
+              {/* 5. Services Section */}
+              <section id="services" className="py-24 px-5 bg-black text-center">
+                <h2 className="text-white text-4xl md:text-5xl font-bold mb-12" style={{ color: 'aquamarine' }}>OUR SERVICES</h2>
+                <div className="services-grid grid md:grid-cols-3 gap-10 max-w-6xl mx-auto">
+                  {servicesData.map((service, index) => (
+                    <div key={index} className="bg-black rounded-xl p-8 border border-gray-700 hover:scale-105 transition-transform duration-300 service-card shadow-lg hover:shadow-green-500/50 cursor-pointer">
+                      <i className={`${service.icon} text-white-500 text-5xl mb-4`}></i>
+                      <h3 className="text-white text-2xl font-semibold mb-2">{service.title}</h3>
+                    </div>
+                  ))}
+                </div>
+              </section>
 
+              {/* 6. YouTube Slider Section */}
+              <section id="work" className="py-24 px-5 bg-black">
+                <h2 className="text-white text-4xl md:text-5xl font-bold text-center mb-12" style={{ color: 'aquamarine' }}>OUR WORK</h2>
+                <div style={sliderStyles.container}>
+                  {youtubeVideos.map((videoId, index) => (
+                    <iframe
+                      key={index}
+                      ref={el => (slidesRef.current[index] = el)}
+                      src={`https://www.youtube.com/embed/${videoId}?rel=0`}
+                      className="slider-slide"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                      title={`Fusion Ads Work ${index + 1}`}
+                      style={slideBaseStyle}
+                    ></iframe>
+                  ))}
+                </div>
+                <div className="slider-nav flex justify-center mt-8 space-x-4">
+                  <button 
+                    id="prevBtn" 
+                    className="bg-white bg-opacity-20 text-white rounded-full w-12 h-12 text-xl cursor-pointer hover:bg-green-500 transition-colors duration-300 focus:outline-none flex justify-center items-center shadow-lg" 
+                    onClick={handlePrev}>
+                    <i className="fas fa-chevron-left"></i>
+                  </button>
+                  <button 
+                    id="nextBtn" 
+                    className="bg-white bg-opacity-20 text-white rounded-full w-12 h-12 text-xl cursor-pointer hover:bg-green-500 transition-colors duration-300 focus:outline-none flex justify-center items-center shadow-lg" 
+                    onClick={handleNext}>
+                    <i className="fas fa-chevron-right"></i>
+                  </button>
+                </div>
+              </section>
+
+              {/* 7. Contact Section */}
+              <section id="contact" className="py-24 px-5 bg-black relative z-10 flex justify-center items-center">
+                <div className="container max-w-6xl mx-auto bg-black rounded-xl p-8 shadow-2xl border border-gray-700">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+                    <div className="p-6 rounded-xl">
+                      <h2 className="text-3xl font-bold text-white mb-6 text-center md:text-left">Start a Project</h2>
+                      <form id="contactForm" className="space-y-5" onSubmit={handleSubmit}>
+                        <div>
+                          <input type="text" name="name" placeholder="Your Name" className="w-full p-3 rounded-lg bg-gray-900 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-green-500" required />
+                        </div>
+                        <div>
+                          <input type="email" name="email" placeholder="Your Email" className="w-full p-3 rounded-lg bg-gray-900 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-green-500" required />
+                        </div>
+                        <div>
+                          <textarea placeholder="Tell us about your project..." name="message" rows="5" className="w-full p-3 rounded-lg bg-gray-900 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-green-500" required></textarea>
+                        </div>
+                        <button type="submit" disabled={isSubmitting} className={`w-full font-semibold py-3 rounded-lg transition duration-300 shadow-md ${isSubmitting ? 'bg-gray-500 cursor-not-allowed' : 'bg-green-500 hover:bg-green-600 hover:shadow-lg'}`}>
+                          {isSubmitting ? (
+                            <div className="flex justify-center items-center">
+                              <i className="fas fa-spinner spinner mr-2"></i> Sending...
+                            </div>
+                          ) : (
+                            'Send Message'
+                          )}
+                        </button>
+                      </form>
+                    </div>
+                    <div className="flex flex-col justify-center items-center md:items-start text-center md:text-left space-y-6">
+                      <h3 className='text-2xl font-semibold mb-4 text-green-400'>Contact Details</h3>
+                      <p className='flex items-center space-x-3'><i className="fas fa-envelope text-green-500"></i><span><strong>Email:</strong> fusionads.in@gmail.com</span></p>
+                      <p className='flex items-center space-x-3'><i className="fas fa-phone-alt text-green-500"></i><span><strong>Phone:</strong> +91 8593067808</span></p>
+                      <p className='flex items-center space-x-3'><i className="fas fa-map-marker-alt text-green-500"></i><span><strong>Address:</strong> Coimbatore, India</span></p>
+                      <div className='flex space-x-6 pt-4'>
+                        {/* Social Media Links */}
+                       
+                        <a href="https://www.instagram.com/adsbyfusion?igsh=Y3Uyazh4dzJxZjR0" target="_blank" rel="noopener noreferrer" className='text-gray-400 hover:text-green-500 transition'><i className="fab fa-instagram text-2xl"></i></a>
+                        <a href="https://www.linkedin.com/in/adsby-fusion-a19baa385/" target="_blank" rel="noopener noreferrer" className='text-gray-400 hover:text-green-500 transition'><i className="fab fa-linkedin-in text-2xl"></i></a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              {/* 8. Footer */}
+              <footer className="bg-black py-4 px-6 text-center border-t border-gray-700">
+                <p className="text-gray-400 text-sm">&copy; 2024 Fusion Ads. All rights reserved.</p>
+              </footer>
+
+              {/* 9. Confirmation Modal */}
+              <ConfirmationModal 
+                  isOpen={isModalOpen} 
+                  message={modalMessage} 
+                  onClose={handleCloseModal} 
+              />
+            </div>
+          );
+        };
+
+        // Use React 18's createRoot for rendering
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
     </script>
 </body>
 </html>
